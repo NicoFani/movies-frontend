@@ -3,34 +3,55 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/png" href="..\movies-frontend\assets\popcorn.png"/>
+    <link
+      rel="icon"
+      type="image/png"
+      href="./assets/popcorn.png"
+    />
     <link rel="stylesheet" href="styles.css" />
     <title>Movie App</title>
   </head>
   <body>
     <header>
-      <nav>
+      <div class="left-container">
         <div class="logo">
           <a href="index.html">MOVIE APP</a>
-          <img src="../movies-frontend/assets/popcorn.png" alt="">
+          <img src="./assets/popcorn.png" alt="" />
         </div>
+        <div class="navbar">
+          <a href="index.html">Home</a>
+          <a id="my-list-btn">My List</a>
+          <div class="dropdown">
+            <button class="dropbtn">Genres 
+              <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content" id="genres-list">
+              <!--Here i add the movies genres by javascript-->
+            </div>
+          </div> 
+        </div>
+      </div>
+      <div class="right-container">
         <div class="search">
           <input
             type="text"
             id="search-input"
             placeholder="Search for a movie..."
           />
-          <button id="search-button" class="search-button"><i class="fa-solid fa-magnifying-glass"></i></button>
+          <button id="search-button" class="search-button">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </button>
+        </div>
+        <div class="user">
+          <button id="login-btn" class="login-btn">Log In</button>
+          <img src="./assets/user_pic.jpg" alt="user-picture" class="user-picture" id="user-picture" style="display:none">
         </div>
     </header>
     <div class="movies-container" id="movies-container"></div>
-    <script src="index.js"></script>
+    <script type="module" src="index.js"></script>
     <script
       src="https://kit.fontawesome.com/efaa617c14.js"
       crossorigin="anonymous"
     ></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Alegreya+Sans+SC:ital,wght@0,100;0,300;0,400;0,500;0,700;0,800;0,900;1,100;1,300;1,400;1,500;1,700;1,800;1,900&family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
   </body>
 </html>

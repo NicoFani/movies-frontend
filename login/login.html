@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="../assets/popcorn.png" />
+    <link rel="stylesheet" href="login.css" />
+    <title>Log-In</title>
+  </head>
+  <body class="login-body">
+    <div class="overlay"></div>
+    <div class="form-container">
+      <p class="title">Login</p>
+      <form id="login-form" class="form">
+        <div class="input-group">
+          <label for="username">Username</label>
+          <input type="text" name="username" id="username" placeholder="" />
+        </div>
+        <div class="input-group">
+          <label for="password">Password</label>
+          <input type="password" name="password" id="password" placeholder="" />
+          <div class="forgot">
+            <a rel="noopener noreferrer" href="#">Forgot Password ?</a>
+          </div>
+        </div>
+        <button id="signin-btn" class="sign form-btn">Sign in</button>
+      </form>
+      <div class="social-message">
+        <div class="line"></div>
+      </div>
+      <p class="signup">
+        Don't have an account?
+        <a
+          id="a-signup"
+          rel="noopener noreferrer"
+          href="../signup/signup.html"
+          class=""
+          >Sign up</a
+        >
+      </p>
+    </div>
+    <p class="logged-message" style="display: none">Logueado Correctamente!</p>
+    <script src="login.js"></script>
+    <script
+      src="https://kit.fontawesome.com/efaa617c14.js"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
