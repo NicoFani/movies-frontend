@@ -1,4 +1,6 @@
 import parseJwt from './jwt-decode.js'
+import isLoggedIn from './isLogged.js'
+import isFavourite from './isFavourite.js'
 
 const moviesContainerElement = document.getElementById('movies-container')
 const searchInput = document.getElementById('search-input')
@@ -8,32 +10,6 @@ const loginButton = document.getElementById('login-btn')
 const userPic = document.getElementById('user-picture')
 const myListButton = document.getElementById('my-list-btn')
 
-// Funcion para verificar si el usuario esta logeado, devuelve
-function isLoggedIn() {
-  const token = localStorage.getItem('token')
-
-  if (!token) {
-    return false // No hay token almacenado, el usuario no está autenticado
-  }
-
-  try {
-    const decodedToken = parseJwt(token) // Intenta decodificar el token JWT
-    // Comprueba si el token ha expirado
-    const isTokenExpired = decodedToken.exp < Date.now() / 1000
-    if (isTokenExpired) {
-      // Si el token ha expirado, elimina el token del almacenamiento local
-      localStorage.removeItem('token')
-      return false // El usuario no está autenticado debido a que el token ha expirado
-    }
-
-    // El token es válido y el usuario está autenticado
-    return true
-  } catch (error) {
-    console.log('Error decoding token', error)
-    return false // Ocurrió un error al decodificar el token, el usuario no está autenticado
-  }
-}
-
 fetch('http://localhost:4000/api/movies-genres/')
   .then((response) => {
     if (!response.ok) {
@@ -41,8 +17,8 @@ fetch('http://localhost:4000/api/movies-genres/')
     }
     return response.json()
   })
-  .then((data) => {
-    data.forEach((movie) => {
+  .then(async (data) => {
+    data.forEach(async (movie) => {
       const movieCardElement = document.createElement('div')
       movieCardElement.classList.add('movie-card')
 
@@ -66,14 +42,134 @@ fetch('http://localhost:4000/api/movies-genres/')
                 <div class="genres-list">
                   ${genresList}
                 </div>
-                <p>${movie.sinopsis}</p>
                 <div class="btn-container">
-                <button id="add-btn" ><i class="fa-solid fa-plus"></i></button>
+                <button title="Add to favorites" id="add-btn" class="add-btn"><i class="fa-regular fa-heart"></i></button>
+                <button title="Delete from favorites" id="delete-btn" class="delete-btn"><i class="fa-solid fa-heart"></i></button>
+                <button title="View more" id="view-btn" class="view-btn"><i class="fa-solid fa-eye"></i></button>
                 </div>
               </div>
             </div>`
       document.body.appendChild(movieCardElement)
       moviesContainerElement.appendChild(movieCardElement)
+      // ------- Event Listener for the add button ----------
+      const addButton = movieCardElement.querySelector('.add-btn')
+      if (addButton) {
+        try {
+          const token = localStorage.getItem('token')
+          if (token) {
+            const decodedToken = parseJwt(token)
+            const userId = decodedToken.id
+            const movieId = movie.id
+
+            const isFav = await isFavourite(userId, movieId)
+
+            if (isFav) {
+              addButton.style.display = 'none'
+            } else {
+              addButton.style.display = 'block'
+            }
+          } else {
+            addButton.style.display = 'none'
+          }
+
+          addButton.addEventListener('click', () => {
+            addButton.style.display = 'none'
+            deleteButton.style.display = 'block'
+            const decodedToken = parseJwt(token)
+            const userId = decodedToken.id
+            const movieId = movie.id
+
+            const userMovieData = {
+              id_usuario: userId,
+              id_pelicula: movieId
+            }
+
+            fetch(`http://localhost:4000/api/users-movies`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`
+              },
+              body: JSON.stringify(userMovieData)
+            })
+              .then((response) => {
+                if (!response.ok) {
+                  throw new Error('Network response was not ok')
+                }
+                return response.json()
+              })
+              .then((data) => {
+                console.log('Movie added to list:', data)
+              })
+              .catch((error) => {
+                console.error(
+                  'There has been a problem with your fetch operation:',
+                  error
+                )
+              })
+          })
+        } catch (error) {
+          console.error('Error fetching or parsing data', error)
+        }
+      }
+
+      // -----------------------------------------------------------------
+      const deleteButton = movieCardElement.querySelector('.delete-btn')
+      if (deleteButton) {
+        try {
+          const token = localStorage.getItem('token')
+          if (token) {
+            const decodedToken = parseJwt(token)
+            const userId = decodedToken.id
+            const movieId = movie.id
+
+            const isFav = await isFavourite(userId, movieId)
+
+            if (isFav) {
+              deleteButton.style.display = 'block'
+            } else {
+              deleteButton.style.display = 'none'
+            }
+          } else {
+            deleteButton.style.display = 'none'
+          }
+
+          deleteButton.addEventListener('click', () => {
+            deleteButton.style.display = 'none'
+            addButton.style.display = 'block'
+            const decodedToken = parseJwt(token)
+            const userId = decodedToken.id
+            const movieId = movie.id
+
+            fetch(
+              `http://localhost:4000/api/users-movies/${userId}/${movieId}`,
+              {
+                method: 'DELETE',
+                headers: {
+                  Authorization: `Bearer ${token}`
+                }
+              }
+            )
+              .then((response) => {
+                if (!response.ok) {
+                  throw new Error('Network response was not ok')
+                }
+                return response.json()
+              })
+              .then((data) => {
+                console.log('Movie deleted from list:', data)
+              })
+              .catch((error) => {
+                console.error(
+                  'There has been a problem with your fetch operation:',
+                  error
+                )
+              })
+          })
+        } catch (error) {
+          console.error('Error fetching or parsing data', error)
+        }
+      }
     })
   })
   .catch((error) => {
@@ -118,9 +214,9 @@ searchButton.addEventListener('click', () => {
                 <div class="genres-list">
                   ${genresList}
                 </div>
-                <p>${movie.sinopsis}</p>
                 <div class="btn-container">
                 <button><i class="fa-solid fa-plus"></i></button>
+                <button id="view-btn" class="view-btn"><i class="fa-solid fa-eye"></i></button>
                 </div>
               </div>
             </div>`
@@ -191,9 +287,9 @@ function filterMovieByGenre(genreId) {
                 <div class="genres-list">
                   ${genresList}
                 </div>
-                <p>${movie.sinopsis}</p>
                 <div class="btn-container">
                 <button><i class="fa-solid fa-plus"></i></button>
+                <button id="view-btn" class="view-btn"><i class="fa-solid fa-eye"></i></button>
                 </div>
               </div>
             </div>`
@@ -203,7 +299,6 @@ function filterMovieByGenre(genreId) {
       })
     })
 }
-// Funcion para extraer el id del usuario del token
 
 myListButton.addEventListener('click', () => {
   const token = localStorage.getItem('token')
@@ -224,9 +319,9 @@ myListButton.addEventListener('click', () => {
         }
         return response.json()
       })
-      .then((data) => {
+      .then(async (data) => {
         moviesContainerElement.innerHTML = ''
-        data.forEach((movie) => {
+        data.forEach(async (movie) => {
           const movieCardElement = document.createElement('div')
           movieCardElement.classList.add('movie-card')
 
@@ -250,15 +345,72 @@ myListButton.addEventListener('click', () => {
                 <div class="genres-list">
                   ${genresList}
                 </div>
-                <p>${movie.sinopsis}</p>
                 <div class="btn-container">
-                <button><i class="fa-solid fa-plus"></i></button>
+                <button title="Delete from favorites" id="delete-btn" class="delete-btn"><i class="fa-solid fa-heart"></i></button>
+                <button id="view-btn" class="view-btn"><i class="fa-solid fa-eye"></i></button>
                 </div>
               </div>
             </div>`
 
           document.body.appendChild(movieCardElement)
           moviesContainerElement.appendChild(movieCardElement)
+
+          const deleteButton = movieCardElement.querySelector('.delete-btn')
+          if (deleteButton) {
+            try {
+              const token = localStorage.getItem('token')
+              if (token) {
+                const decodedToken = parseJwt(token)
+                const userId = decodedToken.id
+                const movieId = movie.id
+
+                const isFav = await isFavourite(userId, movieId)
+
+                if (isFav) {
+                  deleteButton.style.display = 'block'
+                } else {
+                  deleteButton.style.display = 'none'
+                }
+              } else {
+                deleteButton.style.display = 'none'
+              }
+
+              deleteButton.addEventListener('click', () => {
+                movieCardElement.style.display = 'none'
+                deleteButton.style.display = 'none'
+                const decodedToken = parseJwt(token)
+                const userId = decodedToken.id
+                const movieId = movie.id
+
+                fetch(
+                  `http://localhost:4000/api/users-movies/${userId}/${movieId}`,
+                  {
+                    method: 'DELETE',
+                    headers: {
+                      Authorization: `Bearer ${token}`
+                    }
+                  }
+                )
+                  .then((response) => {
+                    if (!response.ok) {
+                      throw new Error('Network response was not ok')
+                    }
+                    return response.json()
+                  })
+                  .then((data) => {
+                    console.log('Movie deleted from list:', data)
+                  })
+                  .catch((error) => {
+                    console.error(
+                      'There has been a problem with your fetch operation:',
+                      error
+                    )
+                  })
+              })
+            } catch (error) {
+              console.error('Error fetching or parsing data', error)
+            }
+          }
         })
       })
       .catch((error) => {
@@ -270,8 +422,8 @@ myListButton.addEventListener('click', () => {
   }
 })
 
+// Event listener for the login button
 loginButton.addEventListener('click', () => {
-  console.log('Login button clicked')
   window.location.href = './login/login.html'
 })
 
@@ -280,6 +432,7 @@ console.log('Token obtenido:', tokenObtenido)
 
 console.log('Decoded token', parseJwt(tokenObtenido))
 
+// Event listener to show user picture when logged in
 document.addEventListener('DOMContentLoaded', function () {
   if (isLoggedIn()) {
     loginButton.style.display = 'none'
@@ -290,6 +443,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 })
 
+// Event listener to click de user picture to log out
 userPic.addEventListener('click', () => {
   localStorage.removeItem('token')
   userPic.style.display = 'none'
