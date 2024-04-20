@@ -1,3 +1,6 @@
+// const url = 'https://movies-server-2kuw.onrender.com'
+const url = 'http://localhost:4000'
+
 document.addEventListener('DOMContentLoaded', function () {
   const loginForm = document.getElementById('login-form')
 
@@ -20,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Enviar datos al servidor (aquí debes hacer la solicitud HTTP POST al backend)
-    fetch('http://localhost:4000/api/users/login', {
+    fetch(`${url}/api/users/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -47,30 +50,3 @@ document.addEventListener('DOMContentLoaded', function () {
       })
   })
 })
-
-// function isLoggedIn() {
-//   const token = localStorage.getItem('token')
-
-//   if (!token) {
-//     return false
-//   }
-
-//   try {
-//     const decodedToken = jwt_decode(token)
-//     console.log('Decoded token:', decodedToken)
-//     return true
-//   } catch (error) {
-//     console.log('Error decoding token', error)
-//     return false
-//   }
-// }
-
-// document.addEventListener('DOMContentLoaded', function () {
-//   const messageElement = document.getElementById('logged-message')
-
-//   if (isLoggedIn()) {
-//     messageElement.style.display = 'block'
-//   } else {
-//     messageElement.style.display = 'none'
-//   }
-// })

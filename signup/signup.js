@@ -1,3 +1,6 @@
+// const url = 'https://movies-server-2kuw.onrender.com'
+const url = 'http://localhost:4000'
+
 document.addEventListener('DOMContentLoaded', function () {
   const signupForm = document.getElementById('signup-form')
 
@@ -26,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Enviar datos al servidor (aquí debes hacer la solicitud HTTP POST al backend)
-    fetch('http://localhost:4000/api/users/register', {
+    fetch(`${url}/api/users/register`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

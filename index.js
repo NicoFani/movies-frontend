@@ -2,7 +2,8 @@ import parseJwt from './services/jwt-decode.js'
 import isLoggedIn from './services/isLogged.js'
 import isFavourite from './services/isFavourite.js'
 
-const url = procces.env.URL
+// const url = 'https://movies-server-2kuw.onrender.com'
+const url = 'http://localhost:4000'
 const moviesContainerElement = document.getElementById('movies-container')
 const searchInput = document.getElementById('search-input')
 const searchButton = document.getElementById('search-button')
@@ -143,6 +144,8 @@ fetch(`${url}/api/movies-genres/`)
             const decodedToken = parseJwt(token)
             const userId = decodedToken.id
             const movieId = movie.id
+            console.log('User ID:', userId)
+            console.log('Movie ID:', movieId)
 
             fetch(`${url}/api/users-movies/${userId}/${movieId}`, {
               method: 'DELETE',
