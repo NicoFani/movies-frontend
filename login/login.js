@@ -1,5 +1,5 @@
-// const url = 'https://movies-server-2kuw.onrender.com'
-const url = 'http://localhost:4000'
+const url = 'https://movies-server-2kuw.onrender.com'
+// const url = 'http://localhost:4000'
 
 document.addEventListener('DOMContentLoaded', function () {
   const loginForm = document.getElementById('login-form')

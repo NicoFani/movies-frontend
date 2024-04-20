@@ -2,8 +2,8 @@ import parseJwt from './services/jwt-decode.js'
 import isLoggedIn from './services/isLogged.js'
 import isFavourite from './services/isFavourite.js'
 
-// const url = 'https://movies-server-2kuw.onrender.com'
-const url = 'http://localhost:4000'
+const url = 'https://movies-server-2kuw.onrender.com'
+// const url = 'http://localhost:4000'
 const moviesContainerElement = document.getElementById('movies-container')
 const searchInput = document.getElementById('search-input')
 const searchButton = document.getElementById('search-button')

@@ -1,5 +1,5 @@
-// const url = 'https://movies-server-2kuw.onrender.com'
-const url = 'http://localhost:4000'
+const url = 'https://movies-server-2kuw.onrender.com'
+// const url = 'http://localhost:4000'
 
 // Funcion utilizada para saber si una pelicula es favorita de un usuario
 
