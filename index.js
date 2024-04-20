@@ -1,6 +1,6 @@
-import parseJwt from './jwt-decode.js'
-import isLoggedIn from './isLogged.js'
-import isFavourite from './isFavourite.js'
+import parseJwt from './services/jwt-decode.js'
+import isLoggedIn from './services/isLogged.js'
+import isFavourite from './services/isFavourite.js'
 
 const moviesContainerElement = document.getElementById('movies-container')
 const searchInput = document.getElementById('search-input')
@@ -9,6 +9,8 @@ const genresList = document.getElementById('genres-list')
 const loginButton = document.getElementById('login-btn')
 const userPic = document.getElementById('user-picture')
 const myListButton = document.getElementById('my-list-btn')
+const moviePoster = document.getElementById('main-movie-container')
+const overlay = document.getElementById('overlay')
 
 fetch('http://localhost:4000/api/movies-genres/')
   .then((response) => {
@@ -320,7 +322,13 @@ myListButton.addEventListener('click', () => {
         return response.json()
       })
       .then(async (data) => {
-        moviesContainerElement.innerHTML = ''
+        moviePoster.style.display = 'none'
+        overlay.style.display = 'none'
+        moviesContainerElement.style.height = 'auto'
+        moviesContainerElement.style.alignItems = 'center'
+        moviesContainerElement.style.justifyContent = 'center'
+        moviesContainerElement.style.marginTop = '100px'
+        moviesContainerElement.innerHTML = `<h2 class="my-list-title">My List</h2>`
         data.forEach(async (movie) => {
           const movieCardElement = document.createElement('div')
           movieCardElement.classList.add('movie-card')
@@ -449,4 +457,17 @@ userPic.addEventListener('click', () => {
   userPic.style.display = 'none'
   loginButton.style.display = 'block'
   window.location.href = 'index.html'
+})
+
+// Functions to navigate across the app
+
+loginButton.addEventListener('click', () => {
+  window.location.href = 'login/login.html'
+})
+
+// Change header background color when scrolling
+
+window.addEventListener('scroll', () => {
+  const header = document.querySelector('header')
+  header.classList.toggle('sticky', window.scrollY > 0)
 })
