@@ -2,6 +2,7 @@ import parseJwt from './services/jwt-decode.js'
 import isLoggedIn from './services/isLogged.js'
 import isFavourite from './services/isFavourite.js'
 
+const url = procces.env.URL
 const moviesContainerElement = document.getElementById('movies-container')
 const searchInput = document.getElementById('search-input')
 const searchButton = document.getElementById('search-button')
@@ -12,7 +13,7 @@ const myListButton = document.getElementById('my-list-btn')
 const moviePoster = document.getElementById('main-movie-container')
 const overlay = document.getElementById('overlay')
 
-fetch('http://localhost:4000/api/movies-genres/')
+fetch(`${url}/api/movies-genres/`)
   .then((response) => {
     if (!response.ok) {
       throw new Error('Network response was not ok')
@@ -86,7 +87,7 @@ fetch('http://localhost:4000/api/movies-genres/')
               id_pelicula: movieId
             }
 
-            fetch(`http://localhost:4000/api/users-movies`, {
+            fetch(`${url}/api/users-movies`, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
@@ -143,15 +144,12 @@ fetch('http://localhost:4000/api/movies-genres/')
             const userId = decodedToken.id
             const movieId = movie.id
 
-            fetch(
-              `http://localhost:4000/api/users-movies/${userId}/${movieId}`,
-              {
-                method: 'DELETE',
-                headers: {
-                  Authorization: `Bearer ${token}`
-                }
+            fetch(`${url}/api/users-movies/${userId}/${movieId}`, {
+              method: 'DELETE',
+              headers: {
+                Authorization: `Bearer ${token}`
               }
-            )
+            })
               .then((response) => {
                 if (!response.ok) {
                   throw new Error('Network response was not ok')
@@ -181,9 +179,7 @@ fetch('http://localhost:4000/api/movies-genres/')
 searchButton.addEventListener('click', () => {
   const searchValue = searchInput.value.trim()
 
-  fetch(
-    `http://localhost:4000/api/movies-genres/${encodeURIComponent(searchValue)}`
-  )
+  fetch(`${url}/api/movies-genres/${encodeURIComponent(searchValue)}`)
     .then((response) => {
       if (!response.ok) {
         throw new Error('Network response was not ok')
@@ -234,7 +230,7 @@ searchButton.addEventListener('click', () => {
     })
 })
 
-fetch('http://localhost:4000/api/genres')
+fetch(`${url}/api/genres`)
   .then((response) => {
     if (!response.ok) {
       throw new Error('Network response was not ok')
@@ -256,7 +252,7 @@ fetch('http://localhost:4000/api/genres')
   })
 
 function filterMovieByGenre(genreId) {
-  fetch(`http://localhost:4000/api/movies/genres/${genreId}`)
+  fetch(`${url}/api/movies/genres/${genreId}`)
     .then((response) => {
       if (!response.ok) {
         throw new Error('Network response was not ok')
@@ -310,7 +306,7 @@ myListButton.addEventListener('click', () => {
   } else {
     const decodedToken = parseJwt(token)
     const userId = decodedToken.id
-    fetch(`http://localhost:4000/api/users/${userId}/movies`, {
+    fetch(`${url}/api/users/${userId}/movies`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -390,15 +386,12 @@ myListButton.addEventListener('click', () => {
                 const userId = decodedToken.id
                 const movieId = movie.id
 
-                fetch(
-                  `http://localhost:4000/api/users-movies/${userId}/${movieId}`,
-                  {
-                    method: 'DELETE',
-                    headers: {
-                      Authorization: `Bearer ${token}`
-                    }
+                fetch(`${url}/api/users-movies/${userId}/${movieId}`, {
+                  method: 'DELETE',
+                  headers: {
+                    Authorization: `Bearer ${token}`
                   }
-                )
+                })
                   .then((response) => {
                     if (!response.ok) {
                       throw new Error('Network response was not ok')
