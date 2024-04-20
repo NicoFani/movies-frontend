@@ -144,8 +144,6 @@ fetch(`${url}/api/movies-genres/`)
             const decodedToken = parseJwt(token)
             const userId = decodedToken.id
             const movieId = movie.id
-            console.log('User ID:', userId)
-            console.log('Movie ID:', movieId)
 
             fetch(`${url}/api/users-movies/${userId}/${movieId}`, {
               method: 'DELETE',
@@ -431,10 +429,10 @@ loginButton.addEventListener('click', () => {
   window.location.href = './login/login.html'
 })
 
-const tokenObtenido = localStorage.getItem('token')
-console.log('Token obtenido:', tokenObtenido)
+// const tokenObtenido = localStorage.getItem('token')
+// console.log('Token obtenido:', tokenObtenido)
 
-console.log('Decoded token', parseJwt(tokenObtenido))
+// console.log('Decoded token', parseJwt(tokenObtenido))
 
 // Event listener to show user picture when logged in
 document.addEventListener('DOMContentLoaded', function () {
