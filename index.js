@@ -13,6 +13,8 @@ const userPic = document.getElementById('user-picture')
 const myListButton = document.getElementById('my-list-btn')
 const moviePoster = document.getElementById('main-movie-container')
 const overlay = document.getElementById('overlay')
+const closeButton = document.getElementById('close-button')
+const modalOverlay = document.getElementById('modal-overlay')
 
 fetch(`${url}/api/movies-genres/`)
   .then((response) => {
@@ -55,6 +57,26 @@ fetch(`${url}/api/movies-genres/`)
             </div>`
       document.body.appendChild(movieCardElement)
       moviesContainerElement.appendChild(movieCardElement)
+      // ------- Event Listener for the view more button ----------
+      const viewButton = movieCardElement.querySelector('.view-btn')
+      if (viewButton) {
+        viewButton.addEventListener('click', () => {
+          modalOverlay.style.display = 'flex'
+          document.body.style.overflow = 'hidden'
+          document.getElementById('modal-title').textContent = movie.nombre
+          document.getElementById('modal-description').textContent =
+            movie.sinopsis
+          document.getElementById('modal-image').src = movie.imagen
+          document.getElementById(
+            'duration-p'
+          ).textContent = `Duration: ${movie.duracion} minutes`
+          document.getElementById('genres-ul').innerHTML = genresList
+          document.getElementById(
+            'director-p'
+          ).textContent = `Director: ${movie.director}`
+          document.getElementById('year-p').textContent = `Year: ${movie.anio}`
+        })
+      }
       // ------- Event Listener for the add button ----------
       const addButton = movieCardElement.querySelector('.add-btn')
       if (addButton) {
@@ -464,4 +486,9 @@ loginButton.addEventListener('click', () => {
 window.addEventListener('scroll', () => {
   const header = document.querySelector('header')
   header.classList.toggle('sticky', window.scrollY > 0)
+})
+
+closeButton.addEventListener('click', () => {
+  modalOverlay.style.display = 'none'
+  document.body.style.overflow = 'auto'
 })

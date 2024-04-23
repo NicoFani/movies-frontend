@@ -1,5 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Maven+Pro:wght@400..900&display=swap');
 
+html {
+  scrollbar-color: #525252 #000000;
+  scrollbar-width: auto;
+  scroll-behavior: smooth;
+  border-radius: 20px;
+}
+
 body {
   background-color: #1f1f1f;
   padding: 0px;
@@ -77,7 +84,7 @@ header.sticky {
 }
 .dropdown-content a {
   float: none;
-  color: black;
+  color: #000;
   padding: 12px 16px;
   text-decoration: none;
   display: block;
@@ -245,7 +252,93 @@ header.sticky {
   position: relative;
   padding: 30px 0 0 160px;
 }
-
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  overflow-y: auto;
+}
+.movie-modal {
+  background-color: #0f0f0f;
+  max-width: 60%;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  overflow-y: auto;
+  max-height: 80%;
+  padding-bottom: 20px;
+  scrollbar-width: none;
+}
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+.modal-header {
+  display: flex;
+  align-items: center;
+  height: 50px;
+  width: border-box;
+  position: fixed;
+  z-index: 1500;
+}
+.modal-body {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 20px;
+}
+.modal-body img {
+  width: 100%;
+  max-height: 500px;
+  object-fit: cover;
+}
+.modal-body h2 {
+  color: #fff;
+  font-size: 2.4rem;
+  font-weight: bold;
+  padding: 0 20px;
+  margin: 0;
+}
+.genres-ul-modal {
+  display: flex;
+  gap: 10px;
+  padding: 0px;
+  margin: 0px;
+  padding: 0 20px;
+}
+.modal-body p {
+  color: #fff;
+  font-size: 1rem;
+  padding: 0 20px;
+  margin: 0;
+}
+#year-p {
+  color: #636363;
+}
+.trailer-button {
+  width: 25%;
+  margin: 0 20px;
+  padding: 10px 15px;
+  font-size: 1rem;
+  background-color: transparent;
+  border: 1px solid #ff3838;
+  color: #fff;
+  cursor: pointer;
+  outline: none;
+  box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.4);
+  transition: all 0.5s ease-in-out;
+  font-family: 'Maven Pro', sans-serif;
+}
+.trailer-button:hover {
+  background-color: #ff3838;
+}
 .my-list-title {
   width: 90%;
   color: #fff;
@@ -336,6 +429,7 @@ header.sticky {
   font-size: 0.8rem;
   padding: 5px 10px;
   width: fit-content;
+  list-style: none;
 }
 .card p {
   color: #000;
@@ -379,4 +473,14 @@ header.sticky {
   color: #fff;
   padding: 0;
   margin: 0;
+}
+.fa-circle-xmark {
+  padding: 0;
+  margin: 0 20px;
+  cursor: pointer;
+  font-size: 32px;
+  color: #616161;
+  opacity: 0.8;
+  background-color: #b1b1b1;
+  border-radius: 50%;
 }
