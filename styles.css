@@ -264,6 +264,9 @@ header.sticky {
   align-items: center;
   z-index: 1000;
   overflow-y: auto;
+  opacity: 0; /* Ocultar inicialmente */
+  pointer-events: none; /* No permitir interacción con el overlay mientras está oculto */
+  transition: opacity 0.3s ease; /* Transición suave de opacidad */
 }
 .movie-modal {
   background-color: #0f0f0f;
@@ -274,6 +277,19 @@ header.sticky {
   max-height: 80%;
   padding-bottom: 20px;
   scrollbar-width: none;
+  opacity: 0; /* Ocultar inicialmente */
+  transform: scale(0.8); /* Escala más pequeña inicial */
+  transition: opacity 0.3s ease, transform 0.3s ease; /* Transiciones suaves de opacidad y transformación */
+}
+/* Clase para activar el modal */
+.modal-overlay.active {
+  opacity: 1; /* Mostrar el overlay */
+  pointer-events: auto; /* Permitir interacción con el overlay */
+}
+
+.movie-modal.active {
+  opacity: 1; /* Mostrar el modal */
+  transform: scale(1); /* Escala normal al aparecer */
 }
 .modal-content {
   display: flex;
@@ -481,6 +497,6 @@ header.sticky {
   font-size: 32px;
   color: #616161;
   opacity: 0.8;
-  background-color: #b1b1b1;
+  background-color: #c2c2c2;
   border-radius: 50%;
 }

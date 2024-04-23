@@ -15,6 +15,7 @@ const moviePoster = document.getElementById('main-movie-container')
 const overlay = document.getElementById('overlay')
 const closeButton = document.getElementById('close-button')
 const modalOverlay = document.getElementById('modal-overlay')
+const movieModal = document.getElementById('movie-modal')
 
 fetch(`${url}/api/movies-genres/`)
   .then((response) => {
@@ -61,12 +62,12 @@ fetch(`${url}/api/movies-genres/`)
       const viewButton = movieCardElement.querySelector('.view-btn')
       if (viewButton) {
         viewButton.addEventListener('click', () => {
-          modalOverlay.style.display = 'flex'
-          document.body.style.overflow = 'hidden'
+          modalOverlay.classList.add('active')
+          movieModal.classList.add('active')
           document.getElementById('modal-title').textContent = movie.nombre
           document.getElementById('modal-description').textContent =
             movie.sinopsis
-          document.getElementById('modal-image').src = movie.imagen
+          document.getElementById('modal-image').src = movie.poster
           document.getElementById(
             'duration-p'
           ).textContent = `Duration: ${movie.duracion} minutes`
@@ -489,6 +490,6 @@ window.addEventListener('scroll', () => {
 })
 
 closeButton.addEventListener('click', () => {
-  modalOverlay.style.display = 'none'
-  document.body.style.overflow = 'auto'
+  modalOverlay.classList.remove('active')
+  movieModal.classList.remove('active')
 })
