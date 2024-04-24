@@ -1,13 +1,9 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      rel="icon"
-      type="image/png"
-      href="./assets/popcorn.png"
-    />
+    <link rel="icon" type="image/png" href="./assets/popcorn.png" />
     <link rel="stylesheet" href="styles.css" />
     <title>Movie App</title>
   </head>
@@ -22,15 +18,17 @@
           <a href="index.html">Home</a>
           <a id="my-list-btn">My List</a>
           <div class="dropdown">
-            <button class="dropbtn">Genres 
+            <button class="dropbtn">
+              Genres
               <i class="fa fa-caret-down"></i>
             </button>
             <div class="dropdown-content" id="genres-list">
               <!--Here i add the movies genres by javascript-->
             </div>
-          </div> 
+          </div>
         </div>
       </div>
+
       <div class="right-container">
         <div class="search">
           <input
@@ -44,8 +42,15 @@
         </div>
         <div class="user">
           <button id="login-btn" class="login-btn">Log In</button>
-          <img src="./assets/user_pic.jpg" alt="user-picture" class="user-picture" id="user-picture" style="display:none">
+          <img
+            src="./assets/user_pic.jpg"
+            alt="user-picture"
+            class="user-picture"
+            id="user-picture"
+            style="display: none"
+          />
         </div>
+      </div>
     </header>
     <div id="main-movie-container" class="main-movie-container">
       <div class="movie-info">
@@ -55,34 +60,52 @@
           <li class="genres-item">Adventure</li>
           <li class="genres-item">Sci-Fi</li>
         </ul>
-        <p>Ahora que el mundo sabe que el multimillonario industrial Tony Stark (Robert Downey Jr.) es Iron Man, Tony quiere poner de relieve los beneficios del traje de Iron Man relanzando la extravagante idea de su difunto padre de la Expo Stark, una exposición de las innovaciones humanitarias basadas en sus tecnologías. Mientras el gobierno de Estados Unidos insiste para que Tony entregue las revolucionaria arma a los militares, Ivan Vanko (Mickey Rourke), una misteriosa figura del pasado de la familia Stark, se pone en marcha para destruir aTony revelando su propia y devastadora arma basada en la tecnología de Stark.</p>
+        <p>
+          Ahora que el mundo sabe que el multimillonario industrial Tony Stark
+          (Robert Downey Jr.) es Iron Man, Tony quiere poner de relieve los
+          beneficios del traje de Iron Man relanzando la extravagante idea de su
+          difunto padre de la Expo Stark, una exposición de las innovaciones
+          humanitarias basadas en sus tecnologías. Mientras el gobierno de
+          Estados Unidos insiste para que Tony entregue las revolucionaria arma
+          a los militares, Ivan Vanko (Mickey Rourke), una misteriosa figura del
+          pasado de la familia Stark, se pone en marcha para destruir aTony
+          revelando su propia y devastadora arma basada en la tecnología de
+          Stark.
+        </p>
         <button id="add-to-list">Add to my list</button>
-        </div>
+      </div>
     </div>
     <div id="overlay" class="overlay"></div>
-    <h2 class="movies-title">Movies</h2>
+
     <div class="movies-container" id="movies-container">
-
-      <div class="modal-overlay" id="modal-overlay">
-      <div class="movie-modal" id="movie-modal">
-        <div class="modal-content">
-          <div class="modal-header">
-            <i class="fa-solid fa-circle-xmark" id="close-button" title="Close"></i>
-          </div>
-          <div class="modal-body">
-            <img id="modal-image" src="" alt="film-image">
-            <h2 id="modal-title" class="modal-title"></h2>
-            <ul id="genres-ul" class="genres-ul-modal">
-
-            </ul>
-            <p id="year-p" class="year-p"></p>
-            <p id="duration-p" class="duration"></p>
-            <p id="director-p"></p>
-            <p id="modal-description"></p>
-            <button class="trailer-button">Ver Trailer</button>
+      <div class="movies-content">
+        <h2 class="movies-title">Movies</h2>
+        <hr />
+        <div class="movies-grid" id="movies-grid">
+          <div class="modal-overlay" id="modal-overlay">
+            <div class="movie-modal" id="movie-modal">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <i
+                    class="fa-solid fa-circle-xmark"
+                    id="close-button"
+                    title="Close"
+                  ></i>
+                </div>
+                <div class="modal-body">
+                  <img id="modal-image" src="" alt="film-image" />
+                  <h2 id="modal-title" class="modal-title"></h2>
+                  <ul id="genres-ul" class="genres-ul-modal"></ul>
+                  <p id="year-p" class="year-p"></p>
+                  <p id="duration-p" class="duration"></p>
+                  <p id="director-p"></p>
+                  <p id="modal-description"></p>
+                  <button class="trailer-button">Ver Trailer</button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
       </div>
     </div>
     <script type="module" src="index.js"></script>

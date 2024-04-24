@@ -4,11 +4,16 @@ html {
   scrollbar-color: #525252 #000000;
   scrollbar-width: auto;
   scroll-behavior: smooth;
-  border-radius: 20px;
+  min-height: 100vh;
 }
 
 body {
-  background-color: #1f1f1f;
+  background: rgb(0, 0, 0);
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 1) 15%,
+    rgb(26, 26, 26) 100%
+  );
   padding: 0px;
   margin: 0px;
   width: 100%;
@@ -244,14 +249,29 @@ header.sticky {
   gap: 20px;
   padding: 50px 10px 0 10px;
 }
+.movies-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  padding: 20px;
+}
 .movies-title {
-  width: 50%;
+  width: auto;
   color: #fff;
   font-size: 2rem;
   font-weight: bold;
   position: relative;
-  padding: 30px 0 0 160px;
+  margin: 0;
 }
+.movies-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+/* ----- Styles for the Modal ------*/
+
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -279,7 +299,9 @@ header.sticky {
   scrollbar-width: none;
   opacity: 0; /* Ocultar inicialmente */
   transform: scale(0.8); /* Escala más pequeña inicial */
-  transition: opacity 0.3s ease, transform 0.3s ease; /* Transiciones suaves de opacidad y transformación */
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease; /* Transiciones suaves de opacidad y transformación */
 }
 /* Clase para activar el modal */
 .modal-overlay.active {
@@ -355,6 +377,7 @@ header.sticky {
 .trailer-button:hover {
   background-color: #ff3838;
 }
+
 .my-list-title {
   width: 90%;
   color: #fff;
@@ -362,6 +385,13 @@ header.sticky {
   font-weight: bold;
   position: relative;
   margin: 0 0 20px 0;
+}
+.no-movies {
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+  margin: 20px 0;
 }
 .card {
   display: flex;
@@ -427,11 +457,6 @@ header.sticky {
   display: flex;
   flex-direction: column;
 }
-.card li {
-  list-style: none;
-  font-weight: 500;
-  font-size: 1rem;
-}
 .genres-list {
   display: flex;
   width: 100%;
@@ -439,6 +464,7 @@ header.sticky {
   margin-top: 10px;
 }
 .genre-tag {
+  list-style: none;
   background-color: #ff3838;
   color: #fff;
   border-radius: 5px;
@@ -499,4 +525,11 @@ header.sticky {
   opacity: 0.8;
   background-color: #c2c2c2;
   border-radius: 50%;
+}
+
+hr {
+  border: 0;
+  height: 1px;
+  background: #333;
+  margin: 20px 0;
 }

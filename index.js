@@ -16,6 +16,7 @@ const overlay = document.getElementById('overlay')
 const closeButton = document.getElementById('close-button')
 const modalOverlay = document.getElementById('modal-overlay')
 const movieModal = document.getElementById('movie-modal')
+const moviesGrid = document.getElementById('movies-grid')
 
 fetch(`${url}/api/movies-genres/`)
   .then((response) => {
@@ -56,8 +57,7 @@ fetch(`${url}/api/movies-genres/`)
                 </div>
               </div>
             </div>`
-      document.body.appendChild(movieCardElement)
-      moviesContainerElement.appendChild(movieCardElement)
+      moviesGrid.appendChild(movieCardElement)
       // ------- Event Listener for the view more button ----------
       const viewButton = movieCardElement.querySelector('.view-btn')
       if (viewButton) {
@@ -68,13 +68,11 @@ fetch(`${url}/api/movies-genres/`)
           document.getElementById('modal-description').textContent =
             movie.sinopsis
           document.getElementById('modal-image').src = movie.poster
-          document.getElementById(
-            'duration-p'
-          ).textContent = `Duration: ${movie.duracion} minutes`
+          document.getElementById('duration-p').textContent =
+            `Duration: ${movie.duracion} minutes`
           document.getElementById('genres-ul').innerHTML = genresList
-          document.getElementById(
-            'director-p'
-          ).textContent = `Director: ${movie.director}`
+          document.getElementById('director-p').textContent =
+            `Director: ${movie.director}`
           document.getElementById('year-p').textContent = `Year: ${movie.anio}`
         })
       }
@@ -210,9 +208,9 @@ searchButton.addEventListener('click', () => {
       }
       return response.json()
     })
-    .then((data) => {
-      moviesContainerElement.innerHTML = ''
-      data.forEach((movie) => {
+    .then(async (data) => {
+      moviesGrid.innerHTML = ''
+      data.forEach(async (movie) => {
         const movieCardElement = document.createElement('div')
         movieCardElement.classList.add('movie-card')
 
@@ -237,13 +235,128 @@ searchButton.addEventListener('click', () => {
                   ${genresList}
                 </div>
                 <div class="btn-container">
-                <button><i class="fa-solid fa-plus"></i></button>
-                <button id="view-btn" class="view-btn"><i class="fa-solid fa-eye"></i></button>
+                <button title="Add to favorites" id="add-btn" class="add-btn"><i class="fa-regular fa-heart"></i></button>
+                <button title="Delete from favorites" id="delete-btn" class="delete-btn"><i class="fa-solid fa-heart"></i></button>
                 </div>
               </div>
             </div>`
-        document.body.appendChild(movieCardElement)
-        moviesContainerElement.appendChild(movieCardElement)
+        moviesGrid.appendChild(movieCardElement)
+        // ------- Event Listener for the add button ----------
+        const addButton = movieCardElement.querySelector('.add-btn')
+        if (addButton) {
+          try {
+            const token = localStorage.getItem('token')
+            if (token) {
+              const decodedToken = parseJwt(token)
+              const userId = decodedToken.id
+              const movieId = movie.id
+
+              const isFav = await isFavourite(userId, movieId)
+
+              if (isFav) {
+                addButton.style.display = 'none'
+              } else {
+                addButton.style.display = 'block'
+              }
+            } else {
+              addButton.style.display = 'none'
+            }
+
+            addButton.addEventListener('click', () => {
+              addButton.style.display = 'none'
+              deleteButton.style.display = 'block'
+              const decodedToken = parseJwt(token)
+              const userId = decodedToken.id
+              const movieId = movie.id
+
+              const userMovieData = {
+                id_usuario: userId,
+                id_pelicula: movieId
+              }
+
+              fetch(`${url}/api/users-movies`, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  Authorization: `Bearer ${token}`
+                },
+                body: JSON.stringify(userMovieData)
+              })
+                .then((response) => {
+                  if (!response.ok) {
+                    throw new Error('Network response was not ok')
+                  }
+                  return response.json()
+                })
+                .then((data) => {
+                  console.log('Movie added to list:', data)
+                })
+                .catch((error) => {
+                  console.error(
+                    'There has been a problem with your fetch operation:',
+                    error
+                  )
+                })
+            })
+          } catch (error) {
+            console.error('Error fetching or parsing data', error)
+          }
+        }
+
+        // -----------------------------------------------------------------
+        const deleteButton = movieCardElement.querySelector('.delete-btn')
+        if (deleteButton) {
+          try {
+            const token = localStorage.getItem('token')
+            if (token) {
+              const decodedToken = parseJwt(token)
+              const userId = decodedToken.id
+              const movieId = movie.id
+
+              const isFav = await isFavourite(userId, movieId)
+
+              if (isFav) {
+                deleteButton.style.display = 'block'
+              } else {
+                deleteButton.style.display = 'none'
+              }
+            } else {
+              deleteButton.style.display = 'none'
+            }
+
+            deleteButton.addEventListener('click', () => {
+              deleteButton.style.display = 'none'
+              addButton.style.display = 'block'
+              const decodedToken = parseJwt(token)
+              const userId = decodedToken.id
+              const movieId = movie.id
+
+              fetch(`${url}/api/users-movies/${userId}/${movieId}`, {
+                method: 'DELETE',
+                headers: {
+                  Authorization: `Bearer ${token}`
+                }
+              })
+                .then((response) => {
+                  if (!response.ok) {
+                    throw new Error('Network response was not ok')
+                  }
+                  return response.json()
+                })
+                .then((data) => {
+                  console.log('Movie deleted from list:', data)
+                })
+                .catch((error) => {
+                  console.error(
+                    'There has been a problem with your fetch operation:',
+                    error
+                  )
+                })
+            })
+          } catch (error) {
+            console.error('Error fetching or parsing data', error)
+          }
+        }
       })
     })
     .catch((error) => {
@@ -283,18 +396,11 @@ function filterMovieByGenre(genreId) {
       }
       return response.json()
     })
-    .then((data) => {
-      moviesContainerElement.innerHTML = ''
-      data.forEach((movie) => {
+    .then(async (data) => {
+      moviesGrid.innerHTML = ''
+      data.forEach(async (movie) => {
         const movieCardElement = document.createElement('div')
         movieCardElement.classList.add('movie-card')
-
-        const genresList = movie.generos
-          ? movie.generos
-              .split(',')
-              .map((genre) => `<li class="genre-tag">${genre}</li>`)
-              .join('')
-          : ''
 
         movieCardElement.innerHTML = `
             <div class="card">
@@ -307,17 +413,133 @@ function filterMovieByGenre(genreId) {
                   <li>Duración: ${movie.duracion} minutes</li>
                 </ul>
                 <div class="genres-list">
-                  ${genresList}
+                  ${movie.generos.map((genre) => `<li class="genre-tag">${genre}</li>`).join('')}
                 </div>
                 <div class="btn-container">
-                <button><i class="fa-solid fa-plus"></i></button>
-                <button id="view-btn" class="view-btn"><i class="fa-solid fa-eye"></i></button>
+                <button title="Add to favorites" id="add-btn" class="add-btn"><i class="fa-regular fa-heart"></i></button>
+                <button title="Delete from favorites" id="delete-btn" class="delete-btn"><i class="fa-solid fa-heart"></i></button>
                 </div>
               </div>
             </div>`
 
-        document.body.appendChild(movieCardElement)
-        moviesContainerElement.appendChild(movieCardElement)
+        moviesGrid.appendChild(movieCardElement)
+
+        // ------- Event Listener for the add button ----------
+        const addButton = movieCardElement.querySelector('.add-btn')
+        if (addButton) {
+          try {
+            const token = localStorage.getItem('token')
+            if (token) {
+              const decodedToken = parseJwt(token)
+              const userId = decodedToken.id
+              const movieId = movie.id
+
+              const isFav = await isFavourite(userId, movieId)
+
+              if (isFav) {
+                addButton.style.display = 'none'
+              } else {
+                addButton.style.display = 'block'
+              }
+            } else {
+              addButton.style.display = 'none'
+            }
+
+            addButton.addEventListener('click', () => {
+              addButton.style.display = 'none'
+              deleteButton.style.display = 'block'
+              const decodedToken = parseJwt(token)
+              const userId = decodedToken.id
+              const movieId = movie.id
+
+              const userMovieData = {
+                id_usuario: userId,
+                id_pelicula: movieId
+              }
+
+              fetch(`${url}/api/users-movies`, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  Authorization: `Bearer ${token}`
+                },
+                body: JSON.stringify(userMovieData)
+              })
+                .then((response) => {
+                  if (!response.ok) {
+                    throw new Error('Network response was not ok')
+                  }
+                  return response.json()
+                })
+                .then((data) => {
+                  console.log('Movie added to list:', data)
+                })
+                .catch((error) => {
+                  console.error(
+                    'There has been a problem with your fetch operation:',
+                    error
+                  )
+                })
+            })
+          } catch (error) {
+            console.error('Error fetching or parsing data', error)
+          }
+        }
+
+        // -----------------------------------------------------------------
+        const deleteButton = movieCardElement.querySelector('.delete-btn')
+        if (deleteButton) {
+          try {
+            const token = localStorage.getItem('token')
+            if (token) {
+              const decodedToken = parseJwt(token)
+              const userId = decodedToken.id
+              const movieId = movie.id
+
+              const isFav = await isFavourite(userId, movieId)
+
+              if (isFav) {
+                deleteButton.style.display = 'block'
+              } else {
+                deleteButton.style.display = 'none'
+              }
+            } else {
+              deleteButton.style.display = 'none'
+            }
+
+            deleteButton.addEventListener('click', () => {
+              deleteButton.style.display = 'none'
+              addButton.style.display = 'block'
+              const decodedToken = parseJwt(token)
+              const userId = decodedToken.id
+              const movieId = movie.id
+
+              fetch(`${url}/api/users-movies/${userId}/${movieId}`, {
+                method: 'DELETE',
+                headers: {
+                  Authorization: `Bearer ${token}`
+                }
+              })
+                .then((response) => {
+                  if (!response.ok) {
+                    throw new Error('Network response was not ok')
+                  }
+                  return response.json()
+                })
+                .then((data) => {
+                  console.log('Movie deleted from list:', data)
+                })
+                .catch((error) => {
+                  console.error(
+                    'There has been a problem with your fetch operation:',
+                    error
+                  )
+                })
+            })
+          } catch (error) {
+            console.error('Error fetching or parsing data', error)
+          }
+        }
       })
     })
 }
@@ -349,6 +571,11 @@ myListButton.addEventListener('click', () => {
         moviesContainerElement.style.justifyContent = 'center'
         moviesContainerElement.style.marginTop = '100px'
         moviesContainerElement.innerHTML = `<h2 class="my-list-title">My List</h2>`
+        if (data.length === 0) {
+          console.log('No movies in list')
+          moviesContainerElement.innerHTML = `<h2 class="my-list-title">My List</h2>
+          <h3 class="no-movies">You don't have any movies in your list</h3>`
+        }
         data.forEach(async (movie) => {
           const movieCardElement = document.createElement('div')
           movieCardElement.classList.add('movie-card')
@@ -375,7 +602,6 @@ myListButton.addEventListener('click', () => {
                 </div>
                 <div class="btn-container">
                 <button title="Delete from favorites" id="delete-btn" class="delete-btn"><i class="fa-solid fa-heart"></i></button>
-                <button id="view-btn" class="view-btn"><i class="fa-solid fa-eye"></i></button>
                 </div>
               </div>
             </div>`
