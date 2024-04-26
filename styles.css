@@ -290,7 +290,7 @@ header.sticky {
 }
 .movie-modal {
   background-color: #0f0f0f;
-  max-width: 60%;
+  max-width: 45%;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   overflow-y: auto;
@@ -373,6 +373,8 @@ header.sticky {
   box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.4);
   transition: all 0.5s ease-in-out;
   font-family: 'Maven Pro', sans-serif;
+  text-align: center;
+  text-decoration: none;
 }
 .trailer-button:hover {
   background-color: #ff3838;

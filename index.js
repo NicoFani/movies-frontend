@@ -26,7 +26,7 @@ fetch(`${url}/api/movies-genres/`)
     return response.json()
   })
   .then(async (data) => {
-    data.forEach(async (movie) => {
+    for (const movie of data) {
       const movieCardElement = document.createElement('div')
       movieCardElement.classList.add('movie-card')
 
@@ -74,6 +74,7 @@ fetch(`${url}/api/movies-genres/`)
           document.getElementById('director-p').textContent =
             `Director: ${movie.director}`
           document.getElementById('year-p').textContent = `Year: ${movie.anio}`
+          document.getElementById('trailer-button').href = movie.trailer
         })
       }
       // ------- Event Listener for the add button ----------
@@ -192,7 +193,7 @@ fetch(`${url}/api/movies-genres/`)
           console.error('Error fetching or parsing data', error)
         }
       }
-    })
+    }
   })
   .catch((error) => {
     console.error('There has been a problem with your fetch operation:', error)
