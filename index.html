@@ -5,16 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/png" href="./assets/popcorn.png" />
     <link rel="stylesheet" href="styles.css" />
-    <title>Movie App</title>
+    <title>Movies App</title>
   </head>
+
   <body>
-    <header>
+
+    <header id="header">
       <div class="left-container">
         <div class="logo">
-          <a href="index.html">MOVIE APP</a>
+          <a href="index.html">MOVIES APP</a>
           <img src="./assets/popcorn.png" alt="" />
         </div>
-        <div class="navbar">
+        <div class="navbar" id="navbar">
           <a href="index.html">Home</a>
           <a id="my-list-btn">My List</a>
           <div class="dropdown">
@@ -50,8 +52,11 @@
             style="display: none"
           />
         </div>
+        <i class="fa-solid fa-bars" id="menu-bars"></i>
+        <i class="fa-solid fa-xmark" id="menu-xmark"></i>
       </div>
     </header>
+
     <div id="main-movie-container" class="main-movie-container">
       <div class="movie-info">
         <h1>IRON MAN 2</h1>
@@ -78,6 +83,7 @@
     <div id="overlay" class="overlay"></div>
 
     <div class="movies-container" id="movies-container">
+
       <div class="movies-content">
         <h2 class="movies-title">Movies</h2>
         <hr />
@@ -109,6 +115,7 @@
           </div>
         </div>
       </div>
+
     </div>
     <script type="module" src="index.js"></script>
     <script
@@ -116,4 +123,5 @@
       crossorigin="anonymous"
     ></script>
   </body>
+
 </html>

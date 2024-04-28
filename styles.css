@@ -171,6 +171,17 @@ header.sticky {
   object-fit: cover;
   cursor: pointer;
 }
+
+/* Menu Responsive Icons */
+
+#menu-bars {
+  display: none;
+}
+
+#menu-xmark {
+  display: none;
+}
+
 .main-movie-container {
   display: flex;
   justify-content: flex-start;
@@ -186,7 +197,7 @@ header.sticky {
   gap: 10px;
   padding: 50px;
   margin-bottom: 50px;
-  width: 50%;
+  width: 60%;
   color: #fff;
   z-index: 990;
 }
@@ -197,7 +208,7 @@ header.sticky {
 }
 .movie-info p {
   font-size: 1rem;
-  font-weight: 500;
+  font-weight: 400;
 }
 .genres-ul {
   display: flex;
@@ -284,9 +295,9 @@ header.sticky {
   align-items: center;
   z-index: 1000;
   overflow-y: auto;
-  opacity: 0; /* Ocultar inicialmente */
-  pointer-events: none; /* No permitir interacción con el overlay mientras está oculto */
-  transition: opacity 0.3s ease; /* Transición suave de opacidad */
+  opacity: 0; 
+  pointer-events: none; 
+  transition: opacity 0.3s ease; 
 }
 .movie-modal {
   background-color: #0f0f0f;
@@ -297,21 +308,21 @@ header.sticky {
   max-height: 80%;
   padding-bottom: 20px;
   scrollbar-width: none;
-  opacity: 0; /* Ocultar inicialmente */
-  transform: scale(0.8); /* Escala más pequeña inicial */
+  opacity: 0; 
+  transform: scale(0.8); 
   transition:
     opacity 0.3s ease,
-    transform 0.3s ease; /* Transiciones suaves de opacidad y transformación */
+    transform 0.3s ease; 
 }
 /* Clase para activar el modal */
 .modal-overlay.active {
-  opacity: 1; /* Mostrar el overlay */
-  pointer-events: auto; /* Permitir interacción con el overlay */
+  opacity: 1; 
+  pointer-events: auto; 
 }
 
 .movie-modal.active {
-  opacity: 1; /* Mostrar el modal */
-  transform: scale(1); /* Escala normal al aparecer */
+  opacity: 1; 
+  transform: scale(1); 
 }
 .modal-content {
   display: flex;
@@ -534,4 +545,85 @@ hr {
   height: 1px;
   background: #333;
   margin: 20px 0;
+}
+
+/* Responsive Design */
+
+@media (max-width: 1300px) {
+  .logo {
+    font-size: 2rem;
+  }
+  .logo a {
+    font-size: 1.3rem;
+  }
+  .navbar a {
+    font-size: 1rem;
+  }
+  .search input {
+    width: 300px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .logo {
+    font-size: 2rem;
+  }
+  .logo a {
+    font-size: 1.1rem;
+  }
+  .navbar a {
+    font-size: .9rem;
+  }
+  .dropdown .dropbtn {
+    font-size: .9rem;
+  }
+  .search input {
+    font-size: .9rem;
+    width: 300px;
+  }
+  .search-button {
+    font-size: .9rem;
+  }
+  .login-btn {
+    padding: 8px 12px;
+    font-size: .9rem;
+  }
+}
+
+@media (max-width: 970px) {
+  header {
+    background-color: #000;
+  }
+  .header-active {
+    height: 60vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: center;
+    align-items: center;
+  }
+  .left-container {
+    padding: 0 10px;
+  }
+  .navbar {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    background-color: #000;
+    transition: all 0.5s ease-in-out;
+  }
+  .login-btn  {
+    display: none !important;
+  }
+  #menu-bars {
+    display: block;
+    color: #fff;
+    font-size: 1.5rem;
+    z-index: 2000;
+  }
 }

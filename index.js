@@ -17,6 +17,20 @@ const closeButton = document.getElementById('close-button')
 const modalOverlay = document.getElementById('modal-overlay')
 const movieModal = document.getElementById('movie-modal')
 const moviesGrid = document.getElementById('movies-grid')
+const menuBars = document.getElementById('menu-bars')
+const menuXmark = document.getElementById('menu-xmark')
+const header = document.getElementById('header')
+const logoContainer = document.querySelector('.logo')
+const navbar = document.getElementById('navbar')
+const search = document.querySelector('.search')
+
+
+menuBars.addEventListener('click', () => {
+  header.classList.add('header-active')
+  navbar.style.display = 'flex'
+  search.style.display = 'none'
+  logoContainer.style.display = 'none'
+})
 
 fetch(`${url}/api/movies-genres/`)
   .then((response) => {
