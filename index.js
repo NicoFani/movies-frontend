@@ -1,6 +1,10 @@
+// IMPORTACIONES
+
 import parseJwt from './services/jwt-decode.js'
 import isLoggedIn from './services/isLogged.js'
 import isFavourite from './services/isFavourite.js'
+
+// DECLARACIONES DE VARIABLES
 
 const url = 'https://movies-server-2kuw.onrender.com'
 // const url = 'http://localhost:4000'
@@ -17,10 +21,17 @@ const closeButton = document.getElementById('close-button')
 const modalOverlay = document.getElementById('modal-overlay')
 const movieModal = document.getElementById('movie-modal')
 const moviesGrid = document.getElementById('movies-grid')
+const firstSkeleton = document.getElementById('first-skeleton')
+const secondSkeleton = document.getElementById('second-skeleton')
+const thirdSkeleton = document.getElementById('third-skeleton')
 const menuBars = document.getElementById('menu-bars')
 const menuXmark = document.getElementById('menu-xmark')
 const navbar = document.getElementById('navbar')
 const header = document.querySelector('header')
+
+firstSkeleton.classList.remove('hide')
+secondSkeleton.classList.remove('hide')
+thirdSkeleton.classList.remove('hide')
 
 fetch(`${url}/api/movies-genres/`)
   .then((response) => {
@@ -61,6 +72,9 @@ fetch(`${url}/api/movies-genres/`)
                 </div>
               </div>
             </div>`
+      firstSkeleton.classList.add('hide')
+      secondSkeleton.classList.add('hide')
+      thirdSkeleton.classList.add('hide')
       moviesGrid.appendChild(movieCardElement)
       // ------- Event Listener for the view more button ----------
       const viewButton = movieCardElement.querySelector('.view-btn')
